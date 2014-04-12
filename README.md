@@ -10,3 +10,8 @@ It's based on xubuntu 14.04 Trusty Thar.
 1. AutoLogin into xubuntu's Guest account.
 2. Disable the notification window from the guest account
 3. Start a fullscreen remote desktop connection with the server set at installation with this script.
+
+# How to use it?
+wget https://github.com/AndreasPrang/Ubuntu-Remote-Desktop-Thin-Client/remoteInstall
+sudo chmod +x remoteInstall
+./remoteInstall

@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# check for running as root
+if (( EUID != 0 )); then
+   echo "You must be root to do this." 1>&2
+   sudo ./$0
+   exit 100
+fi
+
+echo "Install guest autologin"
+echo "
+[SeatDefaults]
+allow-guest=true
+autologin-guest=true
+autologin-user-timeout=2
+autologin-session=xubuntu
+user-session=xubuntu
+greeter-session=lightdm-gtk-greeter" \
+> /etc/lightdm/lightdm.conf.d/10-xubuntu.conf
+
+mkdir /etc/guest-session
+
+echo "#!/bin/bash
+touch \$HOME/.skip-guest-warning-dialog" \
+> /etc/guest-session/prefs.sh
+
+echo "Install Remote Desktop "
+apt-get -y install rdesktop
+
+echo "Please enter Remote Servers URL"
+read serverURL
+
+echo "\
+#!/bin/bash
+eval \"sleep 3; rdesktop $serverURL -f &\" &" \
+> /etc/guest-session/auto.sh
